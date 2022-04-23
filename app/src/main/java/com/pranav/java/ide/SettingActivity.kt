@@ -22,11 +22,11 @@ class SettingActivity : AppCompatActivity() {
         "15.0", "16.0", "17.0"
     )
 
-    private var javaVersions_spinner: Spinner
-    private var classpath_bttn: MatetialButton
+    lateinit var javaVersions_spinner: Spinner
+    lateinit var classpath_bttn: MaterialButton
 
-    private var alertDialog: AlertDialog
-    private var settings: SharedPreferences
+    lateinit var alertDialog: AlertDialog
+    lateinit var settings: SharedPreferences
 
     private val TAG = "SettingsActivity"
 
@@ -90,8 +90,8 @@ class SettingActivity : AppCompatActivity() {
                 { _ ->
                     alertDialog.show()
 
-                    val classpath_edt: TextInputEditText = alertDialog.findViewById(R.id.classpath_edt)
-                    val save_classpath_bttn: MaterialButton =
+                    val classpath_edt: TextInputEditText? = alertDialog.findViewById(R.id.classpath_edt)
+                    val save_classpath_bttn: MaterialButton? =
                             alertDialog.findViewById(R.id.save_classpath_bttn)
 
                     if (!settings.getString("classpath", "").equals("")) {
