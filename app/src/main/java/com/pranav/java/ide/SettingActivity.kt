@@ -95,12 +95,12 @@ class SettingActivity : AppCompatActivity() {
                             alertDialog.findViewById(R.id.save_classpath_bttn)
 
                     if (!settings.getString("classpath", "").equals("")) {
-                        classpath_edt.setText(settings.getString("classpath", ""))
+                        classpath_edt?.setText(settings.getString("classpath", ""))
                     }
 
-                    save_classpath_bttn.setOnClickListener(
+                    save_classpath_bttn?.setOnClickListener(
                             { _ ->
-                                val enteredClasspath = classpath_edt.getText().toString()
+                                val enteredClasspath = classpath_edt?.getText().toString()
                                 settings.edit().putString("classpath", enteredClasspath).apply()
 
                                 /* Check if specified classpath is empty - if yes, change button text */
