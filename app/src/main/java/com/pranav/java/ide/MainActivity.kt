@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
             if (line.startsWith(".end method")) insideMethod = false
 
             if (insideMethod and !shouldSkip(line)) {
-                lines.set(i, line + "\n")
+                lines.set(i, line + System.lineSeparator())
             }
         }
 
