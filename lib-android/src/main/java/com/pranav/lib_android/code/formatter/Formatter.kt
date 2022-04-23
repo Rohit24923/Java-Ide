@@ -17,7 +17,7 @@ class Formatter constructor(val source: String) {
                         DefaultCodeFormatter.K_COMPILATION_UNIT,
                         source,
                         0, // starting index
-                        source.length(), // length
+                        source.length, // length
                         0, // initial indentation
                         System.lineSeparator() // line separator
                         )
