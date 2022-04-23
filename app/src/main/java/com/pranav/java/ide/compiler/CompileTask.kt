@@ -16,14 +16,14 @@ import java.io.File
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 
-class CompileTask(Context context, CompilerListeners listener) : Thread() {
+class CompileTask(context: Context, listener: CompilerListeners) : Thread() {
 
     private var d8Time: Long = 0
     private var ecjTime: Long = 0
 
     private var errorsArePresent = false
 
-    private lateninit var activity: MainActivity
+    private lateinit var activity: MainActivity
 
     private lateinit var listener: CompilerListeners
 
@@ -33,7 +33,7 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
     lateinit var STAGE_LOADING_DEX: String
 
     init {
-        activity = (MainActivity) context
+        activity = context as MainActivity
         listener = listener
 
         STAGE_CLEAN = context.getString(R.string.stage_clean)
@@ -49,19 +49,18 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
             // Delete previous build files
             listener.OnCurrentBuildStageChanged(STAGE_CLEAN)
             FileUtil.deleteFile(FileUtil.getBinDir())
-            activity.file(FileUtil.getBinDir()).mkdirs()
-            val mainFile = File(FileUtil.getJavaDir() + "Main.java")
+            File(FileUtil.getBinDir()).mkdirs()
+            val mainFile = File(FileUtil.getJavaDir(), "Main.java")
             Files.createParentDirs(mainFile)
             // a simple workaround to prevent calls to system.exit
-            Files.write(
+            mainFile.writeText(
                     activity.editor
                             .getText()
                             .toString()
                             .replace("System.exit(", "System.err.print(\"Exit code \" + ")
-                            .getBytes(),
-                    mainFile)
+                    )
         } catch (e: IOException) {
-            activity.dialog("Cannot save program", e.getMessage(), true)
+            activity.dialog("Cannot save program", e.message, true)
             listener.OnFailed()
         }
 
@@ -70,11 +69,11 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
         errorsArePresent = true
         try {
             listener.OnCurrentBuildStageChanged(STAGE_ECJ)
-            CompileJavaTask javaTask = CompileJavaTask(activity.builder)
+            val javaTask = CompileJavaTask(activity.builder)
             javaTask.doFullTask()
             errorsArePresent = false
         } catch (e: Throwable) {
-            activity.showErr(e.getMessage())
+            activity.showErr(e.message)
             listener.OnFailed()
         }
         if (errorsArePresent) {
@@ -90,7 +89,7 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
             D8Task().doFullTask()
         } catch (e: Throwable) {
             errorsArePresent = true
-            activity.showErr(e.getMessage())
+            activity.showErr(e.message)
             listener.OnFailed()
             return
         }
@@ -113,7 +112,7 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
                         } catch (e: InvocationTargetException) {
                             activity.dialog(
                                     "Failed...",
-                                    "Runtime error: " + e.getMessage() + "\n\n" + e.getMessage(),
+                                    "Runtime error: " + e.message + "\n\n" + e.message,
                                     true)
                         } catch (e: Exception) {
                             activity.dialog(
@@ -126,18 +125,18 @@ class CompileTask(Context context, CompilerListeners listener) : Thread() {
                         }
                         val s = StringBuilder()
                         s.append("Success! ECJ took: ")
-                        s.append(String.valueOf(ecjTime))
+                        s.append(ecjTime.toString())
                         s.append("ms, ")
                         s.append("D8")
                         s.append(" took: ")
-                        s.append(String.valueOf(d8Time))
+                        s.append(d8Time.toString())
                         s.append("ms")
 
                         activity.dialog(s.toString(), task.getLogs(), true)
                     })
         } catch (e: Throwable) {
             listener.OnFailed()
-            activity.showErr(e.getMessage())
+            activity.showErr(e.message)
         }
     }
 
