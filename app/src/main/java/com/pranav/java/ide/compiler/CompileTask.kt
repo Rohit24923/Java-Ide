@@ -16,7 +16,7 @@ import java.io.File
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 
-class CompileTask(context: Context, listener: CompilerListeners) : Thread() {
+class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
 
     private var d8Time: Long = 0
     private var ecjTime: Long = 0
@@ -34,7 +34,7 @@ class CompileTask(context: Context, listener: CompilerListeners) : Thread() {
 
     init {
         activity = context as MainActivity
-        listener = listener
+        listener = listeners
 
         STAGE_CLEAN = context.getString(R.string.stage_clean)
         STAGE_ECJ = context.getString(R.string.stage_ecj)
