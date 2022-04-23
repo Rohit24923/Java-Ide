@@ -4,7 +4,7 @@ import org.eclipse.jdt.internal.formatter.DefaultCodeFormatter
 import org.eclipse.jdt.internal.formatter.DefaultCodeFormatterOptions
 import org.eclipse.jface.text.Document
 
-class Formatter(source: String) {
+class Formatter constructor(val source: String) {
 
     fun format(): String {
         val options =
