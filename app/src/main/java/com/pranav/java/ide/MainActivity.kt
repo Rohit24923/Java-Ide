@@ -326,12 +326,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun formatSmali(inp: String): String {
 
-        val lines = Arrays.asList(inp.split("\n"))
+        val lines: Array<String> = Arrays.asList(inp.split("\n"))
 
         var insideMethod = false
 
         for (i in 0 until lines.size) {
-            val line: String = lines.get(i)
+            val line = lines.get(i)
 
             if (line.startsWith(".method")) insideMethod = true
 
