@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                         Thread(
                                 CompileTask(
                                         this@MainActivity,
-                                        CompileTask.CompilerListeners() {
+                                        object : CompileTask.CompilerListeners() {
                                             override fun OnCurrentBuildStageChanged(stage: String) {
                                                 changeLoadingDialogBuildStage(stage)
                                             }
@@ -331,7 +331,7 @@ class MainActivity : AppCompatActivity() {
         var insideMethod = false
 
         for (i in 0 until lines.size) {
-            val line = lines.get(i)
+            val line: String = lines.get(i)
 
             if (line.startsWith(".method")) insideMethod = true
 
