@@ -92,7 +92,7 @@ public class CompileTask extends Thread {
         try {
             listener.OnCurrentBuildStageChanged(STAGE_D8TASK);
             new D8Task().doFullTask();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             errorsArePresent = true;
             activity.showErr(e.getMessage());
             listener.OnFailed();
