@@ -37,7 +37,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
     init {
         activity = context as MainActivity
         listener = listeners
-        builder = JavaBuilder(context)
+        builder = JavaBuilder(context, activity.mClassLoader)
 
         STAGE_CLEAN = context.getString(R.string.stage_clean)
         STAGE_ECJ = context.getString(R.string.stage_ecj)

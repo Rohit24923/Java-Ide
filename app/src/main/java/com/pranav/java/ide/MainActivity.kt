@@ -50,12 +50,14 @@ import java.util.Arrays
 class MainActivity : AppCompatActivity() {
 
     lateinit var editor: CodeEditor
+    lateinit var mClassLoader: ClassLoader
 
     private lateinit var loadingDialog: AlertDialog
     private lateinit var runThread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mClassLoader = getClassLoader()
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
