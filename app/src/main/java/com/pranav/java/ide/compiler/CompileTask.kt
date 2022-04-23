@@ -63,7 +63,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
                             .replace("System.exit(", "System.err.print(\"Exit code \" + ")
                     )
         } catch (e: IOException) {
-            activity.dialog("Cannot save program", e.message, true)
+            activity.dialog("Cannot save program", e.message?, true)
             listener.OnFailed()
         }
 
@@ -76,7 +76,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
             javaTask.doFullTask()
             errorsArePresent = false
         } catch (e: Throwable) {
-            activity.showErr(e.message)
+            activity.showErr(e.message?)
             listener.OnFailed()
         }
         if (errorsArePresent) {
@@ -92,7 +92,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
             D8Task().doFullTask()
         } catch (e: Throwable) {
             errorsArePresent = true
-            activity.showErr(e.message)
+            activity.showErr(e.message?)
             listener.OnFailed()
             return
         }
@@ -139,7 +139,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
                     })
         } catch (e: Throwable) {
             listener.OnFailed()
-            activity.showErr(e.message)
+            activity.showErr(e.message?)
         }
     }
 

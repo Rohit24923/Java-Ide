@@ -47,7 +47,7 @@ import java.io.IOException
 import java.util.ArrayList
 import java.util.Arrays
 
-class MainActivity : AppCompatActivity {
+class MainActivity : AppCompatActivity() {
 
     lateinit var editor: CodeEditor
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toolbar toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
         getSupportActionBar()?.setHomeButtonEnabled(false)
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity {
         ConcurrentUtil.executeInBackground {
                     if (!File(FileUtil.getClasspathDir(), "android.jar").exists()) {
                         ZipUtil.unzipFromAssets(
-                                MainActivity.this, "android.jar.zip", FileUtil.getClasspathDir());
+                                this@MainActivity, "android.jar.zip", FileUtil.getClasspathDir());
                     }
                     val stubs = File(FileUtil.getClasspathDir(), "/core-lambda-stubs.jar");
                     if (!stubs.exists()
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity {
                                     .getString("javaVersion", "7.0")
                                     .equals("8.0")) {
                         try {
-                            output.writeBytes(getAssets().open("core-lambda-stubs.jar").readBytes())
+                            stubs.writeBytes(getAssets().open("core-lambda-stubs.jar").readBytes())
                         } catch (e: Exception) {
                             showErr(getString(e));
                         }
@@ -131,8 +131,8 @@ class MainActivity : AppCompatActivity {
             /* So, this method is also triggered from another thread (Compile.java)
              * We need to make sure that this code is executed on main thread */
             runOnUiThread {
-                    val stage_txt: TextView = loadingDialog.findViewById(R.id.stage_txt)
-                    stage_txt.setText(stage)
+                    val stage_txt: TextView? = loadingDialog.findViewById(R.id.stage_txt)
+                    stage_txt?.setText(stage)
                 }
         }
     }
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             R.id.format_menu_button -> {
                 val formatter = Formatter(editor.getText().toString());
@@ -151,18 +151,18 @@ class MainActivity : AppCompatActivity {
                 }
             }
 
-            R.id.settings_menu_button {
+            R.id.settings_menu_button -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
             }
 
-            R.id.run_menu_button {
+            R.id.run_menu_button -> {
                 loadingDialog.show() // Show Loading Dialog
                 runThread =
                         Thread(
                                 CompileTask(
                                         this@MainActivity,
-                                        CompileTask.CompilerListeners() {
+                                        object : CompileTask.CompilerListeners() {
                                             override fun OnCurrentBuildStageChanged(stage: String) {
                                                 changeLoadingDialogBuildStage(stage)
                                             }
@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity {
                                         }))
                 runThread.start()
             }
-            else -> break
+            els
         }
         return super.onOptionsItemSelected(item)
     }
@@ -206,12 +206,12 @@ class MainActivity : AppCompatActivity {
                                 arrayOf(
                                     "-f",
                                     "-o",
-                                    FileUtil.getBinDir().concat("smali/"),
-                                    FileUtil.getBinDir().concat("classes.dex")
+                                    FileUtil.getBinDir().plus("smali/"),
+                                    FileUtil.getBinDir().plus("classes.dex")
                                 )
                         ConcurrentUtil.execute { BaksmaliCmd.main(args) }
 
-                        CodeEditor edi = CodeEditor(this)
+                        val edi = CodeEditor(this)
                         edi.setTypefaceText(Typeface.MONOSPACE)
                         edi.setEditorLanguage(JavaLanguage())
                         edi.setColorScheme(SchemeDarcula())
@@ -323,13 +323,13 @@ class MainActivity : AppCompatActivity {
                 })
     }
 
-    private fun formatSmali(in: String): String {
+    private fun formatSmali(inp: String): String {
 
-        val lines = ArrayList<String>(Arrays.asList(in.split("\n")))
+        val lines = ArrayList<String>(Arrays.asList(inp.split("\n")))
 
         var insideMethod = false
 
-        for (var i = 0; i < lines.size(); i++) {
+        for (i in lines.size()) {
 
             val line = lines.get(i)
 
@@ -342,7 +342,7 @@ class MainActivity : AppCompatActivity {
 
         val result = StringBuilder();
 
-        for (var i = 0; i < lines.size(); i++) {
+        for (i in lines.size()) {
             if (i != 0) result.append("\n")
 
             result.append(lines.get(i))
@@ -351,7 +351,7 @@ class MainActivity : AppCompatActivity {
         return result.toString()
     }
 
-    private fun shouldSkip(smaliLine: smaliLine): Boolean {
+    private fun shouldSkip(smaliLine: String): Boolean {
 
         val ops = arrayOf(".line", ":", ".prologue")
 
@@ -389,7 +389,7 @@ class MainActivity : AppCompatActivity {
             dialog.setNeutralButton(
                     "COPY",
                     { _, _ ->
-                        (getSystemService(getApplicationContext().CLIPBOARD_SERVICE) as ClipboardManager)
+                        (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
                                 .setPrimaryClip(ClipData.newPlainText("clipboard", message));
                     })
         dialog.create().show()
@@ -400,9 +400,9 @@ class MainActivity : AppCompatActivity {
             val classes = ArrayList<String>()
             val dexfile =
                     DexFileFactory.loadDexFile(
-                            FileUtil.getBinDir().concat("classes.dex"), Opcodes.forApi(26))
+                            FileUtil.getBinDir().plus("classes.dex"), Opcodes.forApi(26))
             for (classDef in dexfile.getClasses().toTypedArray()) {
-                String name = classDef.getType().replace("/", ".") // convert class name to standard form
+                val name = classDef.getType().replace("/", ".") // convert class name to standard form
                 classes.add(name.substring(1, name.length() - 1))
             }
             return classes.toTypedArray()

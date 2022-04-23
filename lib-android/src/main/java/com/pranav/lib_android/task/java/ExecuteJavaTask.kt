@@ -39,7 +39,7 @@ class ExecuteJavaTask constructor(
 			System.setOut(PrintStream(`out`))
 			System.setErr(PrintStream(`out`))
 			
-			val loader = PathClassLoader(dexFile, mBuilder.getClassloader())
+			val loader = PathClassLoader(dexFile, getClassloader())
 			try {
 
 				val calledClass = loader.loadClass(clazz)
