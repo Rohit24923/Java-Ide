@@ -39,9 +39,9 @@ class SettingActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         getSupportActionBar()?.setHomeButtonEnabled(true)
-        toolbar.setNavigationOnClickListener({ _ ->
+        toolbar.setNavigationOnClickListener { _ ->
             onBackPressed()
-        })
+        }
 
         settings = getSharedPreferences("compiler_settings", MODE_PRIVATE)
 
@@ -63,7 +63,7 @@ class SettingActivity : AppCompatActivity() {
 
         /* Select Version in Spinner based on SharedPreferences Value */
         var count = 0
-        for (version : javaVersions) {
+        for (version in javaVersions) {
             if (version.equals(settings.getString("javaVersion", "7.0"))) {
                 javaVersions_spinner.setSelection(count)
                 break
@@ -72,18 +72,17 @@ class SettingActivity : AppCompatActivity() {
         }
 
         /* Save Selected Java Version in SharedPreferences */
-        javaVersions_spinner.setOnItemSelectedListener(
-                AdapterView.OnItemSelectedListener() {
+        javaVersions_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
-                            adapterView: AdapterView<?>, view: View, i: Int, l: Long) {
+                            adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
                         settings.edit()
                                 .putString("javaVersion", javaVersions[i])
                                 .apply()
                         Log.e(TAG, "Selected Java Version (By User): " + javaVersions[i])
                     }
 
-                    override fun onNothingSelected(adapterView: AdapterView<?>) {}
-                });
+                    override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+                }
 
         buildClasspathDialog()
 

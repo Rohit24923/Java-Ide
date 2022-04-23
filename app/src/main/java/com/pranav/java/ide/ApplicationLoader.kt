@@ -26,7 +26,7 @@ class ApplicationLoader : Application() {
 					intent.putExtra("error", Log.getStackTraceString(throwable))
 					val pendingIntent =
 							PendingIntent.getActivity(
-									mContext, 11111, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE)
+									mContext, 11111, intent, (PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE))
 
 					val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 					am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, pendingIntent)
