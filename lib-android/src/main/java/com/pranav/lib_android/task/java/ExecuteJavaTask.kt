@@ -54,7 +54,7 @@ class ExecuteJavaTask constructor(
 					  result = res
 					}
 				} else if (Modifier.isPublic(method.getModifiers())) {
-					val classInstance = calledClass.newInstance()
+					val classInstance = calledClass.getConstructor().newInstance()
 					val res = method.invoke(classInstance, param as? Any)
 					if (res !is Unit) {
 					  result = res

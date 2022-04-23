@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
 
     /* Build Loading Dialog - This dialog shows on code compilation */
     fun buildLoadingDialog() {
-        val builder = MaterialAlertDialogBuilder(MainActivity.this)
+        val builder = MaterialAlertDialogBuilder(this)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val dialogView: View =
                 getLayoutInflater().inflate(R.layout.compile_loading_dialog, viewGroup, false)
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                         Thread(
                                 CompileTask(
                                         this@MainActivity,
-                                        object : CompileTask.CompilerListeners() {
+                                        CompileTask.CompilerListeners {
                                             override fun OnCurrentBuildStageChanged(stage: String) {
                                                 changeLoadingDialogBuildStage(stage)
                                             }
@@ -181,7 +181,6 @@ class MainActivity : AppCompatActivity() {
                                         }))
                 runThread.start()
             }
-            els
         }
         return super.onOptionsItemSelected(item)
     }
@@ -327,7 +326,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun formatSmali(inp: String): String {
 
-        val lines = ArrayList<String>(Arrays.asList(inp.split("\n")))
+        val lines = Arrays.asList(inp.split("\n"))
 
         var insideMethod = false
 
@@ -382,7 +381,7 @@ class MainActivity : AppCompatActivity() {
 
     fun dialog(title: String, message: String, copyButton: Boolean) {
         val dialog =
-                MaterialAlertDialogBuilder(MainActivity.this)
+                MaterialAlertDialogBuilder(this)
                         .setTitle(title)
                         .setMessage(message)
                         .setPositiveButton("GOT IT", null)
@@ -405,7 +404,7 @@ class MainActivity : AppCompatActivity() {
                             FileUtil.getBinDir().plus("classes.dex"), Opcodes.forApi(26))
             for (classDef in dexfile.getClasses().toTypedArray()) {
                 val name = classDef.getType().replace("/", ".") // convert class name to standard form
-                classes.add(name.substring(1, name.length() - 1))
+                classes.add(name.substring(1, name.length - 1))
             }
             return classes.toTypedArray()
         } catch (e: Exception) {
