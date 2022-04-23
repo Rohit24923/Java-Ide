@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun showErr(e: String) {
+    fun showErr(e: String?) {
         Snackbar.make(
                         findViewById(R.id.container) as LinearLayout,
                         "An error occurred",
@@ -330,7 +330,7 @@ class MainActivity : AppCompatActivity() {
 
         var insideMethod = false
 
-        for (i in lines.size()) {
+        for (i in lines.size) {
 
             val line = lines.get(i)
 
@@ -343,7 +343,7 @@ class MainActivity : AppCompatActivity() {
 
         val result = StringBuilder();
 
-        for (i in lines.size()) {
+        for (i in lines.size) {
             if (i != 0) result.append("\n")
 
             result.append(lines.get(i))
@@ -396,7 +396,7 @@ class MainActivity : AppCompatActivity() {
         dialog.create().show()
     }
 
-    fun getClassesFromDex(): Array<String> {
+    fun getClassesFromDex(): Array<String>? {
         try {
             val classes = ArrayList<String>()
             val dexfile =
