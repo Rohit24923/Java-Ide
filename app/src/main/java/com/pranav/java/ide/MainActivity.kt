@@ -46,6 +46,7 @@ import java.io.File
 import java.io.IOException
 import java.util.ArrayList
 import java.util.Arrays
+import java.util.List
 
 class MainActivity : AppCompatActivity() {
 
@@ -326,7 +327,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun formatSmali(inp: String): String {
 
-        val lines: Array<String> = Arrays.asList(inp.split("\n"))
+        val lines: List<String> = Arrays.asList(inp.split("\n"))
 
         var insideMethod = false
 
