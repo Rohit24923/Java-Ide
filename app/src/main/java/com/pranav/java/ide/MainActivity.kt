@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                         Thread(
                                 CompileTask(
                                         this@MainActivity,
-                                        CompileTask.CompilerListeners {
+                                        CompileTask.CompilerListeners() {
                                             override fun OnCurrentBuildStageChanged(stage: String) {
                                                 changeLoadingDialogBuildStage(stage)
                                             }
@@ -337,7 +337,9 @@ class MainActivity : AppCompatActivity() {
 
             if (line.startsWith(".end method")) insideMethod = false
 
-            if (insideMethod && !shouldSkip(line)) lines.set(i, line + "\n")
+            if (insideMethod and !shouldSkip(line)) {
+                lines.set(i, line + "\n")
+            }
         }
 
         val result = StringBuilder()

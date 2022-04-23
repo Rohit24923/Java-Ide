@@ -101,7 +101,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
         try {
             listener.OnCurrentBuildStageChanged(STAGE_LOADING_DEX)
             val classes = activity.getClassesFromDex()
-            if (classes.equals(null)) {
+            if (classes == null) {
                 return
             }
             listener.OnSuccess()
