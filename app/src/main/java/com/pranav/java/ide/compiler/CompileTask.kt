@@ -10,6 +10,7 @@ import com.pranav.lib_android.exception.CompilationFailedException
 import com.pranav.lib_android.task.java.CompileJavaTask
 import com.pranav.lib_android.task.java.D8Task
 import com.pranav.lib_android.task.java.ExecuteJavaTask
+import com.pranav.lib_android.task.JavaBuilder
 import com.pranav.lib_android.util.FileUtil
 
 import java.io.File
@@ -31,10 +32,12 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
     lateinit var STAGE_ECJ: String
     lateinit var STAGE_D8TASK: String
     lateinit var STAGE_LOADING_DEX: String
+    lateinit var builder: JavaBuilder
 
     init {
         activity = context as MainActivity
         listener = listeners
+        builder = JavaBuilder(context)
 
         STAGE_CLEAN = context.getString(R.string.stage_clean)
         STAGE_ECJ = context.getString(R.string.stage_ecj)
@@ -69,7 +72,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
         errorsArePresent = true
         try {
             listener.OnCurrentBuildStageChanged(STAGE_ECJ)
-            val javaTask = CompileJavaTask(activity.builder)
+            val javaTask = CompileJavaTask(builder)
             javaTask.doFullTask()
             errorsArePresent = false
         } catch (e: Throwable) {
@@ -106,7 +109,7 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
                     "Select a class to execute",
                     classes,
                     { _, item ->
-                        val task = ExecuteJavaTask(activity.builder, classes[item])
+                        val task = ExecuteJavaTask(builder, classes[item])
                         try {
                             task.doFullTask()
                         } catch (e: InvocationTargetException) {
