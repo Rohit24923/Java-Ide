@@ -93,9 +93,9 @@ class MainActivity : AppCompatActivity() {
         ConcurrentUtil.executeInBackground {
                     if (!File(FileUtil.getClasspathDir(), "android.jar").exists()) {
                         ZipUtil.unzipFromAssets(
-                                this@MainActivity, "android.jar.zip", FileUtil.getClasspathDir());
+                                this@MainActivity, "android.jar.zip", FileUtil.getClasspathDir())
                     }
-                    val stubs = File(FileUtil.getClasspathDir(), "/core-lambda-stubs.jar");
+                    val stubs = File(FileUtil.getClasspathDir(), "/core-lambda-stubs.jar")
                     if (!stubs.exists()
                             && getSharedPreferences("compiler_settings", Context.MODE_PRIVATE)
                                     .getString("javaVersion", "7.0")
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                         try {
                             stubs.writeBytes(getAssets().open("core-lambda-stubs.jar").readBytes())
                         } catch (e: Exception) {
-                            showErr(getString(e));
+                            showErr(getString(e))
                         }
                     }
                 }
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             R.id.format_menu_button -> {
-                val formatter = Formatter(editor.getText().toString());
+                val formatter = Formatter(editor.getText().toString())
                 ConcurrentUtil.execute {
                     editor.setText(formatter.format())
                 }
@@ -197,12 +197,12 @@ class MainActivity : AppCompatActivity() {
     fun smali() {
         try {
             val classes = getClassesFromDex()
-            if (classes.equals(null)) return;
+            if (classes == null) return
             listDialog(
                     "Select a class to extract source",
                     classes,
                     { _, pos ->
-                        val claz = classes[pos];
+                        val claz = classes[pos]
                         val args =
                                 arrayOf(
                                     "-f",
@@ -236,7 +236,7 @@ class MainActivity : AppCompatActivity() {
                                 AlertDialog.Builder(this).setView(edi).create()
                         dialog.setCanceledOnTouchOutside(true)
                         dialog.show()
-                    });
+                    })
         } catch (e: Throwable) {
             dialog("Failed to extract smali source", getString(e), true)
         }
@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun disassemble() {
-        val classes = getClassesFromDex();
+        val classes = getClassesFromDex()
         if (classes == null) return
         listDialog(
                 "Select a class to disassemble",
@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                         val disassembled =
                                 ClassFileDisassembler(
                                                 FileUtil.getBinDir() + "classes/" + claz + ".class")
-                                        .disassemble();
+                                        .disassemble()
 
                         edi.setText(disassembled)
 
@@ -330,8 +330,7 @@ class MainActivity : AppCompatActivity() {
 
         var insideMethod = false
 
-        for (i in lines.size) {
-
+        for (i in 0 until lines.size) {
             val line = lines.get(i)
 
             if (line.startsWith(".method")) insideMethod = true
@@ -341,9 +340,9 @@ class MainActivity : AppCompatActivity() {
             if (insideMethod && !shouldSkip(line)) lines.set(i, line + "\n")
         }
 
-        val result = StringBuilder();
+        val result = StringBuilder()
 
-        for (i in lines.size) {
+        for (i in 0 until lines.size) {
             if (i != 0) result.append("\n")
 
             result.append(lines.get(i))
@@ -379,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                 }
     }
 
-    fun dialog(title: String, message: String, copyButton: Boolean) {
+    fun dialog(title: String, message: String?, copyButton: Boolean) {
         val dialog =
                 MaterialAlertDialogBuilder(this)
                         .setTitle(title)
@@ -391,7 +390,7 @@ class MainActivity : AppCompatActivity() {
                     "COPY",
                     { _, _ ->
                         (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
-                                .setPrimaryClip(ClipData.newPlainText("clipboard", message));
+                                .setPrimaryClip(ClipData.newPlainText("clipboard", message))
                     })
         dialog.create().show()
     }

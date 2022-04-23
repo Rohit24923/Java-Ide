@@ -143,11 +143,11 @@ class CompileTask(context: Context, listeners: CompilerListeners) : Thread() {
         }
     }
 
-    interface CompilerListeners {
-        fun OnCurrentBuildStageChanged(stage: String)
+    abstract class CompilerListeners {
+        abstract fun OnCurrentBuildStageChanged(stage: String)
 
-        fun OnSuccess()
+        abstract fun OnSuccess()
 
-        fun OnFailed()
+        abstract fun OnFailed()
     }
 }
