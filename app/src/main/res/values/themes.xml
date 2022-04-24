@@ -39,8 +39,8 @@
    </style>
 
    <style name="Regular">
-       <item name="android:fontFamily">@font/mi_sans_latin_regular</item>
-       <item name="fontFamily">@font/mi_sans_latin_regular</item>
+       <item name="android:fontFamily">@fonts/mi_sans_latin_regular</item>
+       <item name="fontFamily">@fonts/mi_sans_latin_regular</item>
        <item name="android:textStyle">bold</item>
    </style>
 </resources>
