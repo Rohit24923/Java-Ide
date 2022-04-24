@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Stage"
-        style="@style/Regular"/>
+        style="@style/Regular"
         android:textSize="14dp"
         android:textStyle="bold"
         android:textColor="@color/md_theme_light_primary"/>
