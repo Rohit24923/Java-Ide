@@ -4,7 +4,7 @@
     <item
         android:title="@string/run"
         android:id="@+id/run_menu_button"
-        android:icon="@android:drawable/ic_media_play"
+        android:icon="@drawable/baseline_play_arrow_black_24"
         app:showAsAction="always" />
     <item
         android:title="@string/format"
