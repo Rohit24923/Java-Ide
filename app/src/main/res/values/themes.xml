@@ -33,6 +33,10 @@
         <item name="textAppearanceLargePopupMenu">@style/popup</item>
    </style>
 
+   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
    <style name="popup" parent="TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
        <item name="android:textColor">@color/md_theme_light_primary</item>
    </style>
