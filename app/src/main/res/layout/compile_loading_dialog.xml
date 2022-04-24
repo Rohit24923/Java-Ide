@@ -27,6 +27,6 @@
         android:layout_marginTop="8dp"
         android:text="Stage"
         android:textSize="14dp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         android:textColor="@color/md_theme_light_primary"/>
 </LinearLayout>
