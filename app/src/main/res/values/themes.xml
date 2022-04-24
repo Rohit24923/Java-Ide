@@ -28,7 +28,7 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="textAppearanceLargePopupMenu">@style/popup</item>
-        <item name="android:ItemBackground">@color/md_theme_light_primary</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
    </style>
 
    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
