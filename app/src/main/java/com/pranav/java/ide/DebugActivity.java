@@ -21,5 +21,6 @@ public final class DebugActivity extends AppCompatActivity {
                 .setPositiveButton("Quit", (dialog, which) -> finish())
                 .create()
                 .show();
+                ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
     }
 }
